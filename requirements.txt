@@ -1,0 +1,6 @@
+pandas>=2.2,<3
+SQLAlchemy>=2.0,<2.1
+psycopg2-binary>=2.9
+streamlit>=1.37
+plotly>=5.22
+tomli>=2.0; python_version < "3.11"

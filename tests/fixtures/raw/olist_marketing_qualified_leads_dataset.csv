@@ -1,0 +1,4 @@
+mql_id,first_contact_date,landing_page_id,origin
+m1,2018-01-10,lp1,organic_search
+m2,2018-01-15,lp2,paid_search
+m3,2018-01-20,lp3,social

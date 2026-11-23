@@ -1,0 +1,28 @@
+# Leksikon kata kunci Bahasa Portugis (tanpa aksen, huruf kecil) untuk analisis teks ulasan.
+# Kata berakhiran * dicocokkan sebagai awalan kata; selain itu dicocokkan sebagai kata utuh/frasa.
+# Daftar ini dimiliki "data owner ulasan" (pemimpin pengalaman pelanggan) dan dapat diubah di sini.
+
+[sentiment]
+positive = [
+  "otimo*", "excelente*", "bom", "boa", "recomend*", "perfeit*", "adorei", "amei", "satisfeit*",
+  "rapid*", "maravilh*", "parabens", "gostei", "superou", "chegou antes", "tudo certo", "nota 10",
+  "sensacional", "lindo*", "bonito*", "eficiente", "pontual",
+]
+negative = [
+  "pessim*", "horrivel*", "ruim", "nao recebi", "nao chegou", "nunca chegou", "ainda nao",
+  "atras*", "demor*", "defeito*", "quebrad*", "errad*", "diferente*", "falsific*", "devol*",
+  "reembols*", "decepcion*", "decepcao", "pior", "lamentavel", "fraude", "engan*", "absurd*",
+  "descaso", "cancel*", "faltou", "faltando", "estragad*", "danificad*", "amassad*",
+  "nao funciona*", "nao e o que", "nao veio", "nao gostei",
+]
+
+[topics]
+pengiriman = ["atras*", "entrega*", "prazo", "nao chegou", "nao recebi", "ainda nao", "demor*",
+              "transportadora", "correio*", "nunca chegou", "nao veio", "rastre*", "envio"]
+kualitas = ["qualidade", "defeito*", "quebrad*", "estragad*", "nao funciona*", "danificad*",
+            "parou de funcionar", "fragil", "fraco"]
+tidak_sesuai = ["diferente*", "errad*", "nao e o que", "outro produto", "veio outro", "tamanho",
+                "cor", "descricao", "anuncio", "falso", "falsific*", "original*", "modelo"]
+layanan = ["vendedor*", "loja", "atendimento", "resposta*", "responde*", "contato", "reembols*",
+           "devol*", "cancel*", "sac", "suporte"]
+kemasan = ["embalagem", "embalad*", "caixa", "amassad*", "lacre*", "violad*", "pacote", "protecao"]
