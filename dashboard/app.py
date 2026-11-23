@@ -1,10 +1,15 @@
 """Dashboard Customer Intelligence Olist (Streamlit). Jalankan: streamlit run dashboard/app.py"""
 from __future__ import annotations
 
-import plotly.express as px
-import streamlit as st
+import sys
+from pathlib import Path
 
-from dashboard import queries as q
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))  # agar `dashboard` bisa diimpor
+
+import plotly.express as px  # noqa: E402
+import streamlit as st  # noqa: E402
+
+from dashboard import queries as q  # noqa: E402
 
 st.set_page_config(page_title="Customer Intelligence Olist", layout="wide")
 
