@@ -24,7 +24,9 @@ def kpi(engine: Engine) -> pd.DataFrame:
         SELECT count(*) AS pesanan,
                round(avg(is_late::int) FILTER (WHERE is_late IS NOT NULL) * 100, 2) AS pct_terlambat,
                round(avg(avg_score), 2) AS rata_rating,
-               round(sum(item_value), 0) AS nilai_barang
+               round(sum(item_value), 0) AS nilai_barang,
+               round(avg(delay_days)::numeric, 1) AS rata_selisih_hari,
+               round(avg((avg_score <= 2)::int) FILTER (WHERE avg_score IS NOT NULL) * 100, 2) AS pct_ulasan_buruk
         FROM dw.v_order_review""")
 
 
@@ -103,3 +105,32 @@ def quarantine_summary(engine: Engine) -> pd.DataFrame:
     return _df(engine, """
         SELECT rule_id, severity, action, status, count(*) AS baris
         FROM dq.v_quarantine_queue GROUP BY 1, 2, 3, 4 ORDER BY baris DESC""")
+
+
+def monthly_trend(engine: Engine, min_orders: int = 100) -> pd.DataFrame:
+    return _df(engine, """
+        SELECT to_char(d.date, 'YYYY-MM') AS bulan, count(*) AS pesanan,
+               round(avg(o.is_late::int) * 100, 2) AS pct_terlambat,
+               round(sum(o.item_value), 0) AS nilai_barang
+        FROM dw.v_order o JOIN dw.dim_date d ON d.date_key = o.purchase_date_key
+        GROUP BY 1 HAVING count(*) >= :m ORDER BY 1""", m=min_orders)
+
+
+def bad_review_by_lateness(engine: Engine) -> pd.DataFrame:
+    return _df(engine, """
+        SELECT CASE WHEN is_late THEN 'Terlambat' ELSE 'Tepat waktu' END AS kelompok,
+               count(*) AS pesanan,
+               round(avg((avg_score <= 2)::int) * 100, 2) AS pct_ulasan_buruk
+        FROM dw.v_order_review
+        WHERE is_late IS NOT NULL AND avg_score IS NOT NULL GROUP BY 1 ORDER BY 1""")
+
+
+def seller_concentration(engine: Engine, min_orders: int = 10) -> pd.DataFrame:
+    """Porsi pesanan terlambat yang berasal dari 5% penjual dengan keterlambatan terbanyak."""
+    return _df(engine, """
+        WITH s AS (SELECT late_orders, ntile(20) OVER (ORDER BY late_orders DESC) AS t
+                   FROM dw.v_seller_perf WHERE n_delivered >= :m)
+        SELECT count(*) AS penjual,
+               round(sum(late_orders) FILTER (WHERE t = 1) * 100.0 / NULLIF(sum(late_orders), 0), 1)
+                   AS pct_terlambat_dari_top5
+        FROM s""", m=min_orders)
