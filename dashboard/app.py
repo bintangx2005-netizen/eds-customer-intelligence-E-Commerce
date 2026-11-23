@@ -33,24 +33,6 @@ def page_kpi() -> None:
     c[2].metric("Rata-rata rating", f"{k.rata_rating}")
     c[3].metric("Nilai barang (BRL)", f"{int(k.nilai_barang):,}")
 
-    st.subheader("Simulasi aliran data (replay data historis, bukan stream sungguhan)")
-    st.caption("Pesanan diputar ulang ke tabel dw.live_feed oleh `python -m etl.replay`. "
-               "Panel di bawah menyegarkan diri tiap 5 detik.")
-
-    @st.fragment(run_every=5)
-    def live() -> None:
-        s = q.live_feed_summary(engine()).iloc[0]
-        a, b, t = st.columns(3)
-        a.metric("Pesanan diterima (simulasi)", f"{int(s.diterima):,}")
-        b.metric("% terlambat (simulasi)", f"{s.pct_terlambat}%")
-        t.metric("Pembaruan terakhir", str(s.terakhir)[:19] if s.terakhir is not None else "-")
-        if int(s.diterima) == 0:
-            st.info("Belum ada data simulasi. Jalankan: docker compose --profile sim up replay")
-        else:
-            st.dataframe(q.live_feed_recent(engine()), use_container_width=True, hide_index=True)
-
-    live()
-
 
 def page_delay() -> None:
     st.header("Keterlambatan pengiriman")

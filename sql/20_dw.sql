@@ -79,12 +79,6 @@ JOIN staging.review_text_features f ON f.review_id = r.review_id;
 ALTER TABLE dw.fact_review ADD PRIMARY KEY (review_id);
 CREATE INDEX ix_fact_review_order ON dw.fact_review (order_id);
 
--- Tabel untuk mode simulasi aliran data (diisi etl.replay)
-CREATE TABLE dw.live_feed (
-    seq bigserial PRIMARY KEY, order_id text NOT NULL, purchase_ts timestamp,
-    delay_days int, is_late boolean, replayed_at timestamptz NOT NULL DEFAULT now()
-);
-
 -- Tampilan tingkat pesanan: satu baris per pesanan
 CREATE VIEW dw.v_order AS
 SELECT f.order_id, max(f.state_key) AS state_key, max(f.purchase_date_key) AS purchase_date_key,

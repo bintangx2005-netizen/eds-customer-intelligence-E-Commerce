@@ -4,8 +4,3 @@ heavy_rain_mm = 50.0
 start_date = "2016-09-01"
 end_date = "2018-10-31"
 timezone = "America/Sao_Paulo"
-
-[replay]
-# Mode simulasi aliran data: jumlah pesanan per langkah dan jeda antar langkah (detik).
-batch_size = 50
-interval_seconds = 3

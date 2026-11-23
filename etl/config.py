@@ -26,14 +26,12 @@ class Settings:
     weather_start: str
     weather_end: str
     weather_timezone: str
-    replay_batch_size: int
-    replay_interval_seconds: float
 
 
 def load_settings() -> Settings:
     with open(ROOT / "config" / "settings.toml", "rb") as fh:
         cfg = tomllib.load(fh)
-    weather, replay = cfg["weather"], cfg["replay"]
+    weather = cfg["weather"]
     return Settings(
         database_url=os.environ.get(
             "EDS_DATABASE_URL", "postgresql+psycopg2://eds:eds@localhost:5432/eds"
@@ -47,8 +45,6 @@ def load_settings() -> Settings:
         weather_start=weather["start_date"],
         weather_end=weather["end_date"],
         weather_timezone=weather["timezone"],
-        replay_batch_size=int(replay["batch_size"]),
-        replay_interval_seconds=float(replay["interval_seconds"]),
     )
 
 

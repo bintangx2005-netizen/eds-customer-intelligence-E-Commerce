@@ -31,15 +31,5 @@ services:
     depends_on:
       etl: {condition: service_completed_successfully}
 
-  replay:            # simulasi aliran data; jalankan: docker compose --profile sim up replay
-    build: .
-    profiles: ["sim"]
-    command: python -m etl.replay --reset
-    environment:
-      EDS_DATABASE_URL: postgresql+psycopg2://eds:eds@db:5432/eds
-    volumes: ["./config:/app/config"]
-    depends_on:
-      etl: {condition: service_completed_successfully}
-
 volumes:
   pgdata:

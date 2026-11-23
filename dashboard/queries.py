@@ -103,17 +103,3 @@ def quarantine_summary(engine: Engine) -> pd.DataFrame:
     return _df(engine, """
         SELECT rule_id, severity, action, status, count(*) AS baris
         FROM dq.v_quarantine_queue GROUP BY 1, 2, 3, 4 ORDER BY baris DESC""")
-
-
-def live_feed_summary(engine: Engine) -> pd.DataFrame:
-    return _df(engine, """
-        SELECT count(*) AS diterima,
-               coalesce(round(avg(is_late::int) * 100, 2), 0) AS pct_terlambat,
-               max(replayed_at) AS terakhir
-        FROM dw.live_feed""")
-
-
-def live_feed_recent(engine: Engine, n: int = 10) -> pd.DataFrame:
-    return _df(engine, """
-        SELECT seq, order_id, purchase_ts, delay_days, is_late
-        FROM dw.live_feed ORDER BY seq DESC LIMIT :n""", n=n)

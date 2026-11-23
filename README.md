@@ -22,8 +22,6 @@ Pipeline idempotent: dijalankan berulang menghasilkan `dw` yang sama; riwayat `d
 Data cuaca (27 file `data/external/weather/<UF>.json`) diunduh otomatis dari Open-Meteo saat ETL bila belum ada
 dan butuh internet. Bila sudah ada di repo, tidak diunduh ulang. Manual: `python -m etl.fetch_weather`.
 
-Simulasi aliran data (replay data historis, bukan stream sungguhan): `docker compose --profile sim up replay`.
-
 ### Jumlah baris kontrol (raw)
 
 customers 99.441 · geolocation 1.000.163 · order_items 112.650 · payments 103.886 · reviews 99.224 ·
@@ -65,6 +63,5 @@ python -m pytest -q
 - Analisis teks memakai leksikon bahasa Portugis, bukan model ML; akurasinya terbatas dan divalidasi terhadap rating bintang di laporan akhir.
 - Skor U3 dan V4 dihitung per baris pada `raw` tetapi per kode pos pada tahap bersih, jadi perbandingan sebelum/sesudah keduanya tidak setara langsung.
 - Pengukuran "sesudah" dilakukan pada tabel `staging` yang menjadi sumber `dw`.
-- "Aliran data" di dashboard adalah replay simulasi.
 - Pengujian otomatis memakai PostgreSQL lokal dan fixture kecil; konfigurasi Docker belum diuji di lingkungan pengembangan kami selain lewat panduan ini.
 - Data Olist berlisensi CC BY-NC-SA 4.0; Open-Meteo gratis untuk non-komersial.
